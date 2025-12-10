@@ -74,6 +74,9 @@ get-WinGetConfiguration -file .\.configurations\vscode.dsc.yaml | Invoke-WinGetC
 ```powershell
 dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj
 ```
+
+export Protobuf_ProtocFullPath=/usr/bin/protoc && dotnet run --project src/eShop.AppHost/eShop.AppHost.csproj
+
 then look for lines like this in the console output in order to find the URL to open the Aspire dashboard:
 ```sh
 Login to the dashboard at: http://localhost:19888/login?t=uniquelogincodeforyou

@@ -1,0 +1,14 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Azure/azure-dev/main/schemas/v1.0/azure.yaml.json
+
+name: e-shop
+services:  
+  app:
+    language: dotnet
+    project: ./src/eShop.AppHost/eShop.AppHost.csproj
+    host: containerapp
+
+workflows:
+  up:
+    - azd: provision
+    - azd: package --all
+    - azd: deploy --all

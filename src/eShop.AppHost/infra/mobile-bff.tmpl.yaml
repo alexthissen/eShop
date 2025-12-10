@@ -1,0 +1,257 @@
+api-version: 2024-02-02-preview
+location: {{ .Env.AZURE_LOCATION }}
+identity:
+  type: UserAssigned
+  userAssignedIdentities:
+    ? "{{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}"
+    : {}
+properties:
+  environmentId: {{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_ID }}
+  configuration:
+    activeRevisionsMode: single
+    runtime:
+      dotnet:
+        autoConfigureDataProtection: true
+    ingress:
+      external: true
+      targetPort: 5000
+      transport: http
+      allowInsecure: false
+    registries:
+      - server: {{ .Env.AZURE_CONTAINER_REGISTRY_ENDPOINT }}
+        identity: {{ .Env.AZURE_CONTAINER_REGISTRY_MANAGED_IDENTITY_ID }}
+  template:
+    containers:
+      - image: {{ .Image }}
+        name: mobile-bff
+        args:
+          - /app/yarp.dll
+        command: [dotnet]
+        env:
+          - name: AZURE_CLIENT_ID
+            value: {{ .Env.MANAGED_IDENTITY_CLIENT_ID }}
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
+          - name: CATALOG-API_HTTP
+            value: http://catalog-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: CATALOG-API_HTTPS
+            value: https://catalog-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: IDENTITY-API_HTTP
+            value: http://identity-api.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: ORDERING-API_HTTP
+            value: http://ordering-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: REVERSEPROXY__CLUSTERS__cluster_catalog-api__DESTINATIONS__destination1__ADDRESS
+            value: https+http://catalog-api
+          - name: REVERSEPROXY__CLUSTERS__cluster_identity-api__DESTINATIONS__destination1__ADDRESS
+            value: http://_http.identity-api
+          - name: REVERSEPROXY__CLUSTERS__cluster_ordering-api__DESTINATIONS__destination1__ADDRESS
+            value: http://_http.ordering-api
+          - name: REVERSEPROXY__ROUTES__route0__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__PATH
+            value: /catalog-api/api/catalog/items
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route0__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route0__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route10__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__PATH
+            value: /catalog-api/api/catalog/items/{id}/pic
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route10__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route10__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route11__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__PATH
+            value: /api/catalog/{*any}
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route11__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route12__CLUSTERID
+            value: cluster_ordering-api
+          - name: REVERSEPROXY__ROUTES__route12__MATCH__PATH
+            value: /api/orders/{*any}
+          - name: REVERSEPROXY__ROUTES__route12__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route12__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route12__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route12__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route13__CLUSTERID
+            value: cluster_identity-api
+          - name: REVERSEPROXY__ROUTES__route13__MATCH__PATH
+            value: /identity/{*any}
+          - name: REVERSEPROXY__ROUTES__route13__TRANSFORMS__0__PathRemovePrefix
+            value: /identity
+          - name: REVERSEPROXY__ROUTES__route1__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__PATH
+            value: /catalog-api/api/catalog/items/by
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route1__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route1__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route2__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__PATH
+            value: /catalog-api/api/catalog/items/{id}
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route2__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route2__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route3__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route3__MATCH__PATH
+            value: /catalog-api/api/catalog/items/by/{name}
+          - name: REVERSEPROXY__ROUTES__route3__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route3__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route3__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route3__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route3__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route4__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route4__MATCH__PATH
+            value: /catalog-api/api/catalog/items/withsemanticrelevance/{text}
+          - name: REVERSEPROXY__ROUTES__route4__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route4__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route4__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route4__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route4__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route5__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route5__MATCH__PATH
+            value: /catalog-api/api/catalog/items/withsemanticrelevance
+          - name: REVERSEPROXY__ROUTES__route5__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route5__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route5__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route5__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route6__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route6__MATCH__PATH
+            value: /catalog-api/api/catalog/items/type/{typeId}/brand/{brandId?}
+          - name: REVERSEPROXY__ROUTES__route6__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route6__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route6__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route6__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route6__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route7__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route7__MATCH__PATH
+            value: /catalog-api/api/catalog/items/type/all/brand/{brandId?}
+          - name: REVERSEPROXY__ROUTES__route7__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route7__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route7__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route7__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route7__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route8__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__PATH
+            value: /catalog-api/api/catalog/catalogTypes
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route8__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route8__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: REVERSEPROXY__ROUTES__route9__CLUSTERID
+            value: cluster_catalog-api
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__PATH
+            value: /catalog-api/api/catalog/catalogBrands
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__QUERYPARAMETERS__0__ISCASESENSITIVE
+            value: "False"
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__QUERYPARAMETERS__0__NAME
+            value: api-version
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__QUERYPARAMETERS__0__VALUES__0
+            value: "1.0"
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__QUERYPARAMETERS__0__VALUES__1
+            value: "1"
+          - name: REVERSEPROXY__ROUTES__route9__MATCH__QUERYPARAMETERS__0__VALUES__2
+            value: "2.0"
+          - name: REVERSEPROXY__ROUTES__route9__TRANSFORMS__0__PathRemovePrefix
+            value: /catalog-api
+          - name: services__catalog-api__http__0
+            value: http://catalog-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: services__catalog-api__https__0
+            value: https://catalog-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: services__identity-api__http__0
+            value: http://identity-api.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+          - name: services__ordering-api__http__0
+            value: http://ordering-api.internal.{{ .Env.AZURE_CONTAINER_APPS_ENVIRONMENT_DEFAULT_DOMAIN }}
+    scale:
+      minReplicas: 1
+tags:
+  azd-service-name: mobile-bff
+  aspire-resource-name: mobile-bff

@@ -1,0 +1,30 @@
+{
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.4/rc.schema.json",
+  "plugins": [
+    {
+      "name": "MockGeneratorPlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
+    },
+    {
+      "name": "GenericRandomErrorPlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      "configSection": "genericRandomErrorPlugin"
+    }
+  ],
+  "urlsToWatch": [
+    "https://localhost:6222/api/catalog/*",
+    "https://localhost:6222/api/orders/*"
+  ],
+  "genericRandomErrorPlugin": {
+    "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.4/genericrandomerrorplugin.schema.json",
+    "errorsFile": "/opt/microsoft/devproxy/devproxy-errors.json",
+    "rate": 50
+  },
+  "logLevel": "trace",
+  "newVersionNotification": "stable",
+  "showSkipMessages": true,
+  "showTimestamps": true,
+  "validateSchemas": true
+}

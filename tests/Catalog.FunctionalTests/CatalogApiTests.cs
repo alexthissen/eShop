@@ -38,8 +38,9 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
         var body = await response.Content.ReadAsStringAsync(TestContext.Current.CancellationToken);
         var result = JsonSerializer.Deserialize<PaginatedItems<CatalogItem>>(body, _jsonSerializerOptions);
 
-        // Assert 103 total items (101 seeded + 2 added by AddCatalogItem tests) with 5 retrieved from index 0
-        Assert.Equal(103, result.Count);
+        // Assert 101 total items (101 seeded) with 5 retrieved from index 0
+        Assert.Equal(101, result.Count);
+        Assert.Equal(5, result.Data.Count());
         Assert.Equal(0, result.PageIndex);
         Assert.Equal(5, result.PageSize);
     }
@@ -393,6 +394,10 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
         // Assert - 1
         Assert.Equal(bodyContent.Id, addedItem.Id);
 
+        // Cleanup to avoid mutating shared fixture state across tests.
+        response = await _httpClient.DeleteAsync($"/api/catalog/items/{id}", TestContext.Current.CancellationToken);
+        response.EnsureSuccessStatusCode();
+
     }
 
     [Theory]
@@ -403,10 +408,28 @@ public sealed class CatalogApiTests : IClassFixture<CatalogApiFixture>
         var _httpClient = CreateHttpClient(new ApiVersion(version));
 
         var id = version switch {
-            1.0 => 5,
-            2.0 => 6,
+            1.0 => 11015,
+            2.0 => 11016,
             _ => 0
         };
+
+        // Arrange - create a dedicated item for this test so seeded data remains unchanged.
+        var bodyContent = new CatalogItem("DeleteCatalogItemTest") {
+            Id = id,
+            Description = "Item created by DeleteCatalogItem test",
+            Price = 50.25m,
+            PictureFileName = null,
+            CatalogTypeId = 8,
+            CatalogType = null,
+            CatalogBrandId = 13,
+            CatalogBrand = null,
+            AvailableStock = 10,
+            RestockThreshold = 2,
+            MaxStockThreshold = 20,
+            OnReorder = false
+        };
+        var createResponse = await _httpClient.PostAsJsonAsync("/api/catalog/items", bodyContent, TestContext.Current.CancellationToken);
+        createResponse.EnsureSuccessStatusCode();
 
         //Act - 1
         var response = await _httpClient.DeleteAsync($"/api/catalog/items/{id}", TestContext.Current.CancellationToken);

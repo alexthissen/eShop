@@ -28,7 +28,22 @@ public static class Extensions
         builder.AddAIServices();
 
         // HTTP and GRPC client registrations
-        builder.Services.AddGrpcClient<Basket.BasketClient>(o => o.Address = new("http://basket-api"))
+        builder.Services.AddGrpcClient<Basket.BasketClient>(o => o.Address = new("https://basket-api"))
+            .ConfigureChannel(c =>
+                {
+                    c.HttpVersion = new Version(2, 0);
+                    c.HttpVersionPolicy = HttpVersionPolicy.RequestVersionOrLower;
+                })
+            .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
+            {
+                UseProxy = false,
+                Proxy = null,
+                // gRPC needs HTTP/2; keep connections alive
+                EnableMultipleHttp2Connections = true,
+                PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
+                KeepAlivePingDelay = TimeSpan.FromSeconds(60),
+                KeepAlivePingTimeout = TimeSpan.FromSeconds(30)
+            })
             .AddAuthToken();
 
         builder.Services.AddHttpClient<CatalogService>(o => o.BaseAddress = new("https+http://catalog-api"))

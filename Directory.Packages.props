@@ -64,8 +64,8 @@
     <!-- Xabaril packages -->
     <PackageVersion Include="AspNetCore.HealthChecks.Uris" Version="9.0.0" />
     <!-- AI -->
-    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ollama" Version="9.8.0-beta.395" />
-    <PackageVersion Include="CommunityToolkit.Aspire.OllamaSharp" Version="9.8.0-beta.395" />
+    <PackageVersion Include="CommunityToolkit.Aspire.Hosting.Ollama" Version="13.3.0" />
+    <PackageVersion Include="CommunityToolkit.Aspire.OllamaSharp" Version="13.3.0" />
     <!-- Open Telemetry -->
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.15.3" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.15.3" />
@@ -74,11 +74,11 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.1" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.1" />
     <!-- IdentityServer -->
-    <PackageVersion Include="Duende.IdentityServer" Version="7.4.7" />
-    <PackageVersion Include="Duende.IdentityServer.AspNetIdentity" Version="7.4.7" />
-    <PackageVersion Include="Duende.IdentityServer.EntityFramework" Version="7.4.7" />
-    <PackageVersion Include="Duende.IdentityServer.EntityFramework.Storage" Version="7.4.7" />
-    <PackageVersion Include="Duende.IdentityServer.Storage" Version="7.4.7" />
+    <PackageVersion Include="Duende.IdentityServer" Version="$(DuendeVersion)" />
+    <PackageVersion Include="Duende.IdentityServer.AspNetIdentity" Version="$(DuendeVersion)" />
+    <PackageVersion Include="Duende.IdentityServer.EntityFramework" Version="$(DuendeVersion)" />
+    <PackageVersion Include="Duende.IdentityServer.EntityFramework.Storage" Version="$(DuendeVersion)" />
+    <PackageVersion Include="Duende.IdentityServer.Storage" Version="$(DuendeVersion)" />
     <!-- Scaffolding -->
     <PackageVersion Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="10.0.2" />
     <!-- Grpc -->

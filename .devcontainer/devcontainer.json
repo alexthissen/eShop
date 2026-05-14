@@ -67,6 +67,7 @@
 				"ms-edgedevtools.vscode-edge-devtools"
 			],
 			"settings": {
+				"dotnet.preferVisualStudioCodeFileSystemWatcher": true,
 				"vs-kubernetes": {
 					"vs-kubernetes.enable-snap-flag": true,
 					"vscode-kubernetes.minikube-path-linux": "/usr/local/bin/minikube",

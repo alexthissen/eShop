@@ -27,7 +27,7 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
-				"garrytrinder/dev-proxy-toolkit"
+				"garrytrinder.dev-proxy-toolkit@prerelease"
 			]
 		}
 	}

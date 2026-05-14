@@ -39,18 +39,18 @@ var catalogApi = builder.AddProject<Projects.Catalog_API>("catalog-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(catalogDb);
 
-// var devProxy = builder.AddDevProxyExecutable("devproxy")//.WithArgs("--record")
-//     .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
-//     .WithUrlsToWatch(() => [
-//         $"{catalogApi.GetEndpoint("http").Url}/api/catalog/*",
-//         $"{catalogApi.GetEndpoint("https").Url}/api/catalog/*",
-//     ]);
-
 var orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(orderDb).WaitFor(orderDb)
     .WithHttpHealthCheck("/health")
     .WithEnvironment("Identity__Url", identityEndpoint);
+
+var devProxy = builder.AddDevProxyExecutable("devproxy")//.WithArgs("--record")
+    .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
+    .WithUrlsToWatch(() => [
+        $"{catalogApi.GetEndpoint("http").Url}/*",
+        $"{catalogApi.GetEndpoint("https").Url}/*"
+    ]);
 
 builder.AddProject<Projects.OrderProcessor>("order-processor")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
@@ -83,9 +83,9 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(orderingApi)
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WaitFor(identityApi)
-    //.WaitFor(devProxy)
-    //.WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
-    //.WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
+    .WaitFor(devProxy)
+    .WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
+    .WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
 var scalar = builder.AddScalarApiReference(options => options.WithTheme(ScalarTheme.DeepSpace))

@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.4/rc.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.4.0/rc.schema.json",
   "plugins": [
     {
       "name": "MockGeneratorPlugin",
@@ -10,6 +10,9 @@
       "name": "GenericRandomErrorPlugin",
       "enabled": true,
       "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
+      // "configuration": {
+      //   "errorsFilePath": "~appFolder/.devproxy/devproxy-errors.json"
+      // },
       "configSection": "genericRandomErrorPlugin"
     }
   ],
@@ -18,8 +21,8 @@
     "https://localhost:6222/api/orders/*"
   ],
   "genericRandomErrorPlugin": {
-    "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.3.4/genericrandomerrorplugin.schema.json",
-    "errorsFile": "/opt/microsoft/devproxy/devproxy-errors.json",
+    "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.4.0/genericrandomerrorplugin.schema.json",
+    "errorsFile": "devproxy-errors.json",
     "rate": 50
   },
   "logLevel": "trace",

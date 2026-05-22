@@ -1,0 +1,75 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/dotnet
+{
+	"name": "C# (.NET)",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/dotnet:${templateOption:imageVariant}",
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:3.0.1": {
+			"moby": false
+		},
+		"ghcr.io/devcontainers/features/azure-cli:1": {},
+		"ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+		"ghcr.io/azure/azure-dev/azd:0": {},
+		"./local-features/devproxy": {
+			"version": "latest"
+		}
+	},
+	"containerEnv": {
+		"WORKSPACE_ROOT" : "${containerWorkspaceFolder}",
+		"PFX_PASSWORD": "${localEnv:PFX_PASSWORD:DefaultPassword!}",
+		"SSL_CERT_DIR": "/home/vscode/.aspnet/dev-certs/trust:/usr/lib/ssl/certs"
+	},
+
+	"initializeCommand": "pwsh ./.devcontainer/initialize.ps1 ${localEnv:PFX_PASSWORD:DefaultPassword!}",
+	"onCreateCommand": "bash .devcontainer/on-create.sh",
+	"postCreateCommand": "bash .devcontainer/post-create.sh",
+
+	"mounts": [
+        {
+            "type": "bind",
+            //"source": "${localEnv:HOME}${localEnv:USERPROFILE}/.aspnet/https/eshop-ssl.pfx",
+            "source": "${localEnv:USERPROFILE}/.aspnet/https/eshop-ssl.pfx",
+            "target": "/https/eshop-ssl.pfx"
+        },
+		{
+			"type": "volume",
+			"source": "x509stores",
+			"target": "/home/vscode/.dotnet/corefx/cryptography/x509stores"
+		}
+    ],
+
+	// Configure tool-specific properties.
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"github.vscode-github-actions",
+				"ms-vscode.vscode-node-azure-pack",
+				"ms-vscode.azurecli",
+				"ms-vscode-remote.vscode-remote-extensionpack",
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit@prerelease",
+				"ms-dotnettools.vscode-dotnet-runtime",
+				"ms-azuretools.azure-dev",
+				"ms-azuretools.vscode-bicep",
+				"ms-azuretools.vscode-containers",
+				"ms-kubernetes-tools.vscode-kubernetes-tools",
+				"ms-kubernetes-tools.vscode-aks-tools",
+				"ms-edgedevtools.vscode-edge-devtools"
+			],
+			"settings": {
+				"dotnet.preferVisualStudioCodeFileSystemWatcher": true,
+				"vs-kubernetes": {
+					"vs-kubernetes.enable-snap-flag": true,
+					"vscode-kubernetes.minikube-path-linux": "/usr/local/bin/minikube",
+					"vscode-kubernetes.helm-path-linux": "/usr/local/bin/helm",
+					"vscode-kubernetes.kubectl-path-linux": "/usr/local/bin/kubectl"
+				}
+			}
+		}	
+	}
+
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
+}

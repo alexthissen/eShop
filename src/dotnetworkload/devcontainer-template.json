@@ -1,0 +1,33 @@
+{
+    "id": "dotnetworkload",
+    "version": "1.0.1",
+    "name": "Dot Network Load",
+    "description": "A Template to set up a .NET network load environment",
+    "documentationURL": "https://github.com/devcontainers/template-starter/tree/main/src/dotnetworkload",
+    "licenseURL": "https://github.com/devcontainers/template-starter/blob/main/LICENSE",
+    "publisher": "Cloud platform team",
+    "options": {
+        "installMinikube": {
+            "type": "boolean",
+            "description": "Install and start Minikube",
+            "default": false
+        },
+        "imageVariant": {
+            "type": "string",
+            "description": "Debian version (use bullseye on local arm64/Apple Silicon):",
+            "proposals": [
+                "dev-10.0",
+                "dev-9.0",
+                "10.0",
+                "9.0"
+            ],
+            "default": "bullseye"
+        }
+    },
+    "platforms": [
+        "Any"
+    ],
+    "optionalPaths": [
+        ".github/*"
+    ]
+}

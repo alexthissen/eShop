@@ -45,13 +45,6 @@ var orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
     .WithHttpHealthCheck("/health")
     .WithEnvironment("Identity__Url", identityEndpoint);
 
-var devProxy = builder.AddDevProxyExecutable("devproxy")//.WithArgs("--record")
-    .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
-    .WithUrlsToWatch(() => [
-        $"{catalogApi.GetEndpoint("http").Url}/*",
-        $"{catalogApi.GetEndpoint("https").Url}/*"
-    ]);
-
 builder.AddProject<Projects.OrderProcessor>("order-processor")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WithReference(orderDb)
@@ -83,10 +76,22 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(orderingApi)
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WaitFor(identityApi)
-    .WaitFor(devProxy)
-    .WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
-    .WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
     .WithEnvironment("IdentityUrl", identityEndpoint);
+
+// DevProxy is a local-only development tool; skip it when publishing to Azure
+if (builder.ExecutionContext.IsRunMode)
+{
+    var devProxy = builder.AddDevProxyExecutable("devproxy")//.WithArgs("--record")
+        .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
+        .WithUrlsToWatch(() => [
+            $"{catalogApi.GetEndpoint("http").Url}/*",
+            $"{catalogApi.GetEndpoint("https").Url}/*"
+        ]);
+    webApp
+        .WaitFor(devProxy)
+        .WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
+        .WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName));
+}
 
 var scalar = builder.AddScalarApiReference(options => options.WithTheme(ScalarTheme.DeepSpace))
     .WithApiReference(catalogApi)

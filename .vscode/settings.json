@@ -1,4 +1,4 @@
 {
 	"containers.containerCommand": "docker",
-	"dotnet.preferVisualStudioCodeFileSystemWatcher": true
+	"dotnet.preferVisualStudioCodeFileSystemWatcher": true,
 }

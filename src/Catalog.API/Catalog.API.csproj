@@ -17,7 +17,7 @@
     <GenerateDocumentationFile>false</GenerateDocumentationFile>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(PublishProtocol)' != ''">
+  <PropertyGroup>
     <OpenApiGenerateDocuments>false</OpenApiGenerateDocuments>
   </PropertyGroup>
 

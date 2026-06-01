@@ -1,0 +1,556 @@
+{
+  "mocks": [
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/items?pageIndex=0&pageSize=9&api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "135"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/items?pageIndex=0&pageSize=9&api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/items?pageIndex=0&pageSize=9&api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/items?pageIndex=0&pageSize=9&api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/items?pageIndex=0&pageSize=9&api-version=2.0"
+      },
+      "response": {
+        "body": {
+          "pageIndex": 0,
+          "pageSize": 9,
+          "count": 101,
+          "data": [
+            {
+              "id": 99,
+              "name": "Adventurer GPS Watch",
+              "description": "Take navigation to the next level with the Solstix Adventurer GPS Watch. This sleek and durable watch, in midnight blue, features a built-in GPS, altimeter, and compass, allowing you to track your routes and monitor your progress. With multiple sport modes, it's the ideal companion for outdoor enthusiasts.",
+              "price": 199.99,
+              "pictureFileName": "99.webp",
+              "catalogTypeId": 7,
+              "catalogType": null,
+              "catalogBrandId": 7,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 95,
+              "name": "AeroLite Cycling Helmet",
+              "description": "Stay safe and stylish on your cycling adventures with the AirStrider AeroLite Cycling Helmet. This helmet, in a glossy grey, features a lightweight design, adjustable straps, and excellent ventilation to keep you cool. The aerodynamic shape reduces air resistance, enabling you to pick up speed with confidence.",
+              "price": 129.99,
+              "pictureFileName": "95.webp",
+              "catalogTypeId": 8,
+              "catalogType": null,
+              "catalogBrandId": 9,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 88,
+              "name": "Alpine AlpinePack Backpack",
+              "description": "The AlpinePack backpack by Green Equipment is your ultimate companion for outdoor adventures. This versatile and durable backpack features a sleek navy design with reinforced straps. With a capacity of 45 liters, multiple compartments, and a hydration pack sleeve, it offers ample storage and organization. The ergonomic back panel ensures maximum comfort, even on the most challenging treks.",
+              "price": 129.00,
+              "pictureFileName": "88.webp",
+              "catalogTypeId": 4,
+              "catalogType": null,
+              "catalogBrandId": 10,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 3,
+              "name": "Alpine Fusion Goggles",
+              "description": "Enhance your skiing experience with the Alpine Fusion Goggles from WildRunner. These goggles offer full UV protection and anti-fog lenses to keep your vision clear on the slopes. With their stylish silver frame and orange lenses, you'll stand out from the crowd. Adjustable straps ensure a secure fit, while the soft foam padding provides comfort all day long.",
+              "price": 79.99,
+              "pictureFileName": "3.webp",
+              "catalogTypeId": 3,
+              "catalogType": null,
+              "catalogBrandId": 3,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 28,
+              "name": "Alpine Peak Down Jacket",
+              "description": "The Solstix Alpine Peak Down Jacket is crafted for extreme cold conditions. With its bold red color and sleek design, this jacket combines style with functionality. Made with high-quality goose down insulation, the Alpine Peak Jacket provides exceptional warmth and comfort. The jacket features a removable hood, adjustable cuffs, and multiple zippered pockets for storage. Conquer the harshest weather with the Solstix Alpine Peak Down Jacket.",
+              "price": 249.99,
+              "pictureFileName": "28.webp",
+              "catalogTypeId": 6,
+              "catalogType": null,
+              "catalogBrandId": 7,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 18,
+              "name": "Alpine Tech Crampons",
+              "description": "The Alpine Tech Crampons by Grolltex are essential for icy and challenging mountain terrains. Made from strong and lightweight stainless steel, these crampons provide excellent traction and stability. Their simple adjustment system allows for easy fitting and quick attachment to most hiking boots. Available in silver, they are suitable for both beginners and experienced mountaineers.",
+              "price": 149.00,
+              "pictureFileName": "18.webp",
+              "catalogTypeId": 2,
+              "catalogType": null,
+              "catalogBrandId": 8,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 17,
+              "name": "Apex Climbing Harness",
+              "description": "The Apex Climbing Harness by Legend is a lightweight and durable harness designed for maximum comfort and safety. With adjustable leg loops, a contoured waistbelt, and a secure buckle system, this harness provides a secure fit for all-day climbing sessions. Available in bold orange, it also features gear loops for easy access to your equipment.",
+              "price": 89.99,
+              "pictureFileName": "17.webp",
+              "catalogTypeId": 2,
+              "catalogType": null,
+              "catalogBrandId": 12,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 74,
+              "name": "Apex Climbing Harness",
+              "description": "Conquer the heights with the Apex Climbing Harness by Raptor Elite. This harness is constructed with high-strength nylon webbing and features adjustable leg loops for a secure and comfortable fit. The sleek white design with a vibrant orange emblem ensures you'll look good while tackling challenging routes.",
+              "price": 99.99,
+              "pictureFileName": "74.webp",
+              "catalogTypeId": 2,
+              "catalogType": null,
+              "catalogBrandId": 6,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            },
+            {
+              "id": 49,
+              "name": "Arctic Shield Insulated Jacket",
+              "description": "Stay warm and stylish in the Arctic Shield Insulated Jacket by Daybird. This jacket features a water-resistant outer shell, insulated fill for exceptional warmth, and a detachable hood for added versatility. The sleek pink color is perfect for any outdoor occasion.",
+              "price": 169.99,
+              "pictureFileName": "49.webp",
+              "catalogTypeId": 6,
+              "catalogType": null,
+              "catalogBrandId": 1,
+              "catalogBrand": null,
+              "availableStock": 100,
+              "restockThreshold": 10,
+              "maxStockThreshold": 200,
+              "onReorder": false
+            }
+          ]
+        },
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json; charset=utf-8"
+          },
+          {
+            "name": "Date",
+            "value": "Mon, 01 Jun 2026 20:41:15 GMT"
+          },
+          {
+            "name": "Server",
+            "value": "Kestrel"
+          },
+          {
+            "name": "Transfer-Encoding",
+            "value": "chunked"
+          },
+          {
+            "name": "api-supported-versions",
+            "value": "1.0, 2.0"
+          }
+        ],
+        "statusCode": 200
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogTypes?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogTypes?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogTypes?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogTypes?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogTypes?api-version=2.0"
+      },
+      "response": {
+        "body": [
+          {
+            "id": 4,
+            "type": "Bags"
+          },
+          {
+            "id": 2,
+            "type": "Climbing"
+          },
+          {
+            "id": 8,
+            "type": "Cycling"
+          },
+          {
+            "id": 1,
+            "type": "Footwear"
+          },
+          {
+            "id": 6,
+            "type": "Jackets"
+          },
+          {
+            "id": 7,
+            "type": "Navigation"
+          },
+          {
+            "id": 3,
+            "type": "Ski/boarding"
+          },
+          {
+            "id": 5,
+            "type": "Trekking"
+          }
+        ],
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json; charset=utf-8"
+          },
+          {
+            "name": "Date",
+            "value": "Mon, 01 Jun 2026 20:41:15 GMT"
+          },
+          {
+            "name": "Server",
+            "value": "Kestrel"
+          },
+          {
+            "name": "Transfer-Encoding",
+            "value": "chunked"
+          },
+          {
+            "name": "api-supported-versions",
+            "value": "1.0, 2.0"
+          }
+        ],
+        "statusCode": 200
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogBrands?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogBrands?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogBrands?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogBrands?api-version=2.0"
+      },
+      "response": {
+        "headers": [
+          {
+            "name": "Retry-After",
+            "value": "5"
+          },
+          {
+            "name": "Content-Length",
+            "value": "0"
+          }
+        ],
+        "statusCode": 429
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "url": "https://localhost:6222/api/catalog/catalogBrands?api-version=2.0"
+      },
+      "response": {
+        "body": [
+          {
+            "id": 9,
+            "brand": "AirStrider"
+          },
+          {
+            "id": 5,
+            "brand": "B&R"
+          },
+          {
+            "id": 1,
+            "brand": "Daybird"
+          },
+          {
+            "id": 2,
+            "brand": "Gravitator"
+          },
+          {
+            "id": 10,
+            "brand": "Green Equipment"
+          },
+          {
+            "id": 8,
+            "brand": "Grolltex"
+          },
+          {
+            "id": 12,
+            "brand": "Legend"
+          },
+          {
+            "id": 4,
+            "brand": "Quester"
+          },
+          {
+            "id": 6,
+            "brand": "Raptor Elite"
+          },
+          {
+            "id": 7,
+            "brand": "Solstix"
+          },
+          {
+            "id": 3,
+            "brand": "WildRunner"
+          },
+          {
+            "id": 13,
+            "brand": "XE"
+          },
+          {
+            "id": 11,
+            "brand": "Zephyr"
+          }
+        ],
+        "headers": [
+          {
+            "name": "Content-Type",
+            "value": "application/json; charset=utf-8"
+          },
+          {
+            "name": "Date",
+            "value": "Mon, 01 Jun 2026 20:41:15 GMT"
+          },
+          {
+            "name": "Server",
+            "value": "Kestrel"
+          },
+          {
+            "name": "Transfer-Encoding",
+            "value": "chunked"
+          },
+          {
+            "name": "api-supported-versions",
+            "value": "1.0, 2.0"
+          }
+        ],
+        "statusCode": 200
+      }
+    }
+  ],
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.0.0./mockresponseplugin.mocksfile.schema.json"
+}

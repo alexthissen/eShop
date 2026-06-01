@@ -1,9 +1,9 @@
 {
-  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v2.4.0/genericrandomerrorplugin.errorsfile.schema.json",
+  "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.0.0/genericrandomerrorplugin.errorsfile.schema.json",
   "errors": [
     {
       "request": {
-        "url": "https://*/*"
+        "url": "https://localhost:6222/api/catalog/*"
       },
       "responses": [
         {

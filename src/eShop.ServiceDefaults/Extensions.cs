@@ -4,10 +4,14 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http.Resilience;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using OpenTelemetry.Logs;
 using OpenTelemetry.Metrics;
+using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using Polly;
 
 namespace eShop.ServiceDefaults;
 
@@ -23,6 +27,7 @@ public static partial class Extensions
         {
             // Turn on resilience by default
             http.AddStandardResilienceHandler();
+            //http.AddStandardResilienceHandler(config => { config.Retry.ShouldRetryAfterHeader = false; });
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();
@@ -56,6 +61,8 @@ public static partial class Extensions
         });
 
         builder.Services.AddOpenTelemetry()
+            .ConfigureResource(resource => resource
+                .AddService(serviceName: builder.Environment.ApplicationName))
             .WithMetrics(metrics =>
             {
                 metrics.AddAspNetCoreInstrumentation()

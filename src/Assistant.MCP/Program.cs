@@ -1,4 +1,4 @@
-using eShop.McpServer.Tools;
+using eShop.Assistant.Mcp.Tools;
 using eShop.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,8 +18,7 @@ builder.Services.AddHttpClient("OrderingApi", client =>
 builder.Services
     .AddMcpServer()
     .WithHttpTransport()
-    .WithTools<CatalogTools>()
-    .WithTools<OrderTools>();
+    .WithTools<CatalogTools>();
 
 var app = builder.Build();
 

@@ -5,24 +5,24 @@ public class UsersSeed(ILogger<UsersSeed> logger, UserManager<ApplicationUser> u
 {
     public async Task SeedAsync(ApplicationDbContext context)
     {
-        var alice = await userManager.FindByNameAsync("alice");
+        var alex = await userManager.FindByNameAsync("alex");
 
-        if (alice == null)
+        if (alex == null)
         {
-            alice = new ApplicationUser
+            alex = new ApplicationUser
             {
-                UserName = "alice",
-                Email = "AliceSmith@email.com",
+                UserName = "alex",
+                Email = "alexthissen@email.com",
                 EmailConfirmed = true,
-                CardHolderName = "Alice Smith",
+                CardHolderName = "Alex Thissen",
                 CardNumber = "XXXXXXXXXXXX1881",
                 CardType = 1,
                 City = "Redmond",
                 Country = "U.S.",
                 Expiration = "12/24",
                 Id = Guid.NewGuid().ToString(),
-                LastName = "Smith",
-                Name = "Alice",
+                LastName = "Thissen",
+                Name = "Alex",
                 PhoneNumber = "1234567890",
                 ZipCode = "98052",
                 State = "WA",
@@ -30,7 +30,7 @@ public class UsersSeed(ILogger<UsersSeed> logger, UserManager<ApplicationUser> u
                 SecurityNumber = "123"
             };
 
-            var result = await userManager.CreateAsync(alice, "Pass123$");
+            var result = await userManager.CreateAsync(alex, "Pass123$");
 
             if (!result.Succeeded)
             {
@@ -39,14 +39,14 @@ public class UsersSeed(ILogger<UsersSeed> logger, UserManager<ApplicationUser> u
 
             if (logger.IsEnabled(LogLevel.Debug))
             {
-                logger.LogDebug("alice created");
+                logger.LogDebug("alex created");
             }
         }
         else
         {
             if (logger.IsEnabled(LogLevel.Debug))
             {
-                logger.LogDebug("alice already exists");
+                logger.LogDebug("alex already exists");
             }
         }
 

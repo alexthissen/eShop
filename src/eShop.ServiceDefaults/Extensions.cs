@@ -27,7 +27,6 @@ public static partial class Extensions
         {
             // Turn on resilience by default
             http.AddStandardResilienceHandler();
-            //http.AddStandardResilienceHandler(config => { config.Retry.ShouldRetryAfterHeader = false; });
 
             // Turn on service discovery by default
             http.AddServiceDiscovery();

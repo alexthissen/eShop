@@ -2,23 +2,15 @@
   "$schema": "https://raw.githubusercontent.com/dotnet/dev-proxy/main/schemas/v3.0.0/rc.schema.json",
   "plugins": [
     {
-      "name": "MockGeneratorPlugin",
-      "enabled": true,
-      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
-    },
-    {
-      "name": "RetryAfterPlugin",
-      "enabled": true,
-      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
-    },
-    {
       "name": "GenericRandomErrorPlugin",
       "enabled": true,
       "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll",
-      // "configuration": {
-      //   "errorsFilePath": "~appFolder/.devproxy/devproxy-errors.json"
-      // },
       "configSection": "genericRandomErrorPlugin"
+    },
+    {
+      "name": "MockGeneratorPlugin",
+      "enabled": true,
+      "pluginPath": "~appFolder/plugins/DevProxy.Plugins.dll"
     }
   ],
   "urlsToWatch": [

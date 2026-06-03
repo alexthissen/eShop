@@ -1,9 +1,9 @@
 using System.ComponentModel;
 using System.Net.Http.Json;
-using eShop.McpServer.Models;
+using eShop.Assistant.Mcp.Models;
 using ModelContextProtocol.Server;
 
-namespace eShop.McpServer.Tools;
+namespace eShop.Assistant.Mcp.Tools;
 
 [McpServerToolType]
 public sealed class CatalogTools(IHttpClientFactory httpClientFactory)
@@ -38,8 +38,8 @@ public sealed class CatalogTools(IHttpClientFactory httpClientFactory)
         var url = $"api/catalog/items?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
         if (typeId.HasValue && brandId.HasValue)
             url = $"api/catalog/items/type/{typeId}/brand/{brandId}?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
-        else if (typeId.HasValue)
-            url = $"api/catalog/items/type/{typeId}/brand?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
+        else if (brandId.HasValue)
+            url = $"api/catalog/items/type/all/brand/{brandId}?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
 
         var result = await CatalogClient.GetFromJsonAsync<PaginatedItems<CatalogItem>>(url);
         if (result is null || result.Data.Length == 0)

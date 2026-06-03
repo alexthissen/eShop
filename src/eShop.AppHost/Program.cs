@@ -53,7 +53,7 @@ builder.AddProject<Projects.OrderProcessor>("order-processor")
 builder.AddProject<Projects.PaymentProcessor>("payment-processor")
     .WithReference(rabbitMq).WaitFor(rabbitMq);
 
-builder.AddProject<Projects.eShop_McpServer>("mcp-server", launchProfileName)
+builder.AddProject<Projects.Assistant_MCP>("mcp-server", launchProfileName)
     .WithReference(catalogApi).WaitFor(catalogApi)
     .WithReference(orderingApi).WaitFor(orderingApi);
  
@@ -85,7 +85,7 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
 // DevProxy is a local-only development tool; skip it when publishing to Azure
 if (builder.ExecutionContext.IsRunMode)
 {
-    var devProxy = builder.AddDevProxyExecutable("devproxy")//.WithArgs("--record")
+    var devProxy = builder.AddDevProxyExecutable("devproxy")
         .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
         .WithUrlsToWatch(() => [
             $"{catalogApi.GetEndpoint("http").Url}/*",

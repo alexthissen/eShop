@@ -1,4 +1,4 @@
-namespace eShop.McpServer.Models;
+namespace eShop.Assistant.Mcp.Models;
 
 public record CatalogItem(
     int Id,

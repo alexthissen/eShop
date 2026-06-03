@@ -53,9 +53,9 @@ builder.AddProject<Projects.OrderProcessor>("order-processor")
 builder.AddProject<Projects.PaymentProcessor>("payment-processor")
     .WithReference(rabbitMq).WaitFor(rabbitMq);
 
-builder.AddProject<Projects.eShop_McpServer>("mcp-server")
-    .WithReference(catalogApi)
-    .WithReference(orderingApi);
+builder.AddProject<Projects.eShop_McpServer>("mcp-server", launchProfileName)
+    .WithReference(catalogApi).WaitFor(catalogApi)
+    .WithReference(orderingApi).WaitFor(orderingApi);
  
 var webHooksApi = builder.AddProject<Projects.Webhooks_API>("webhooks-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)

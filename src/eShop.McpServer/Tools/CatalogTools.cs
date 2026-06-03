@@ -35,11 +35,11 @@ public sealed class CatalogTools(IHttpClientFactory httpClientFactory)
         [Description("Optional product type ID to filter by")] int? typeId = null)
     {
         pageSize = Math.Clamp(pageSize, 1, 20);
-        var url = $"api/catalog/items?pageIndex={page}&pageSize={pageSize}";
+        var url = $"api/catalog/items?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
         if (typeId.HasValue && brandId.HasValue)
-            url = $"api/catalog/items/type/{typeId}/brand/{brandId}?pageIndex={page}&pageSize={pageSize}";
+            url = $"api/catalog/items/type/{typeId}/brand/{brandId}?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
         else if (typeId.HasValue)
-            url = $"api/catalog/items/type/{typeId}/brand?pageIndex={page}&pageSize={pageSize}";
+            url = $"api/catalog/items/type/{typeId}/brand?pageIndex={page}&pageSize={pageSize}&api-version=1.0";
 
         var result = await CatalogClient.GetFromJsonAsync<PaginatedItems<CatalogItem>>(url);
         if (result is null || result.Data.Length == 0)
@@ -66,7 +66,7 @@ public sealed class CatalogTools(IHttpClientFactory httpClientFactory)
      Description("List all available product brands.")]
     public async Task<string> GetBrands()
     {
-        var brands = await CatalogClient.GetFromJsonAsync<CatalogBrand[]>("api/catalog/catalogbrands");
+        var brands = await CatalogClient.GetFromJsonAsync<CatalogBrand[]>("api/catalog/catalogbrands?api-version=1.0");
         if (brands is null || brands.Length == 0)
             return "No brands available.";
 
@@ -77,7 +77,7 @@ public sealed class CatalogTools(IHttpClientFactory httpClientFactory)
      Description("List all available product types/categories.")]
     public async Task<string> GetProductTypes()
     {
-        var types = await CatalogClient.GetFromJsonAsync<CatalogType[]>("api/catalog/catalogtypes");
+        var types = await CatalogClient.GetFromJsonAsync<CatalogType[]>("api/catalog/catalogtypes?api-version=1.0");
         if (types is null || types.Length == 0)
             return "No product types available.";
 

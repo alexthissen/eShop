@@ -72,6 +72,9 @@ var webhooksClient = builder.AddProject<Projects.WebhookClient>("webhooksclient"
     .WithReference(webHooksApi)
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
+var appConfig = builder.AddAzureAppConfiguration("appconfig")
+    .RunAsEmulator();
+
 var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithExternalHttpEndpoints()
     .WithUrls(c => c.Urls.ForEach(u => u.DisplayText = $"Online Store ({u.Endpoint?.EndpointName})"))

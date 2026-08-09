@@ -17,6 +17,7 @@ internal static class OpenApiOptionsExtensions
     {
         options.AddDocumentTransformer((document, context, cancellationToken) =>
         {
+            var descriptions = context.ApplicationServices.DescribeApiVersions();
             var versionedDescriptionProvider = context.ApplicationServices.GetService<IApiVersionDescriptionProvider>();
             var apiDescription = versionedDescriptionProvider?.ApiVersionDescriptions
                 .SingleOrDefault(description => description.GroupName == context.DocumentName);

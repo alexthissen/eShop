@@ -36,6 +36,8 @@ Console.WriteLine(((IConfigurationRoot)builder.Configuration).GetDebugView());
 
 var app = builder.Build();
 
+app.UseAzureAppConfiguration();
+
 var manager = app.Services.GetRequiredService<IFeatureManager>();
 await foreach (var name in manager.GetFeatureNamesAsync())
 {

@@ -1,5 +1,5 @@
 ﻿@inject NavigationManager Nav
-@inject Microsoft.FeatureManagement.IFeatureManager FeatureManager
+@inject Microsoft.FeatureManagement.IFeatureManagerSnapshot FeatureManager
 
 @if (chatbotEnabled)
 {
@@ -17,7 +17,7 @@
 
     private bool chatbotEnabled;
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task OnParametersSetAsync()
     {
         chatbotEnabled = await FeatureManager.IsEnabledAsync("Chatbot");
     }

@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.1",
   "info": {
-    "title": "eShop - Catalog HTTP API",
-    "description": "The Catalog Microservice HTTP API. This is a Data-Driven/CRUD microservice sample",
+    "title": "GetDocument.Insider | v2",
+    "description": "GetDocument Command-line Tool inside man",
     "version": "2.0"
   },
   "paths": {

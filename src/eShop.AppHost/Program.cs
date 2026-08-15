@@ -73,7 +73,12 @@ var webhooksClient = builder.AddProject<Projects.WebhookClient>("webhooksclient"
     .WithEnvironment("IdentityUrl", identityEndpoint);
 
 var appConfig = builder.AddAzureAppConfiguration("appconfig")
-    .RunAsEmulator();
+    .RunAsEmulator(emulator =>
+    {
+        emulator.WithHostPort(28000);
+        emulator.WithDataVolume();
+        emulator.WithLifetime(ContainerLifetime.Persistent);
+    });
 
 var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithExternalHttpEndpoints()
@@ -83,7 +88,8 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(orderingApi)
     .WithReference(rabbitMq).WaitFor(rabbitMq)
     .WaitFor(identityApi)
-    .WithEnvironment("IdentityUrl", identityEndpoint);
+    .WithEnvironment("IdentityUrl", identityEndpoint)
+    .WithReference(appConfig);
 
 // DevProxy is a local-only development tool; skip it when publishing to Azure
 if (builder.ExecutionContext.IsRunMode)

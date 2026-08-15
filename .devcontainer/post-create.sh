@@ -5,7 +5,7 @@ sudo dotnet workload restore
 
 dotnet tool restore
 
-sudo apt-get update && sudo apt-get install -y protobuf-compiler
+sudo apt-get update && sudo apt-get install -y protobuf-compiler bubblewrap socat
 
 # Check if the ASP.NET Core HTTPS development certificate is already trusted by ASP.NET Core and OpenSSL
 dotnet dev-certs https --check --trust --verbose

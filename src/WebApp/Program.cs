@@ -1,5 +1,6 @@
 ﻿using eShop.WebApp.Components;
 using eShop.ServiceDefaults;
+using Microsoft.FeatureManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,7 +8,41 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.AddApplicationServices();
 
+builder.AddAzureAppConfiguration(
+    "appconfig",
+    configureOptions: options =>
+    {
+        // // Select specific keys or labels
+        // options.Select("MyApp:*");
+        // options.Select("MyApp:*", "Production");
+
+        options.UseFeatureFlags();
+
+        // Configure refresh
+        options.ConfigureRefresh(refresh =>
+        {
+            refresh.Register("eShop:Sentinel", refreshAll: true)
+                .SetRefreshInterval(TimeSpan.FromSeconds(30));
+        });
+    });
+
+builder.Services.AddFeatureManagement();
+builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
+{
+    o.CustomConfigurationMergingEnabled = true;
+});
+
+Console.WriteLine(((IConfigurationRoot)builder.Configuration).GetDebugView());
+
 var app = builder.Build();
+
+var manager = app.Services.GetRequiredService<IFeatureManager>();
+await foreach (var name in manager.GetFeatureNamesAsync())
+{
+    var enabled = await manager.IsEnabledAsync(name);
+    Console.WriteLine($"Feature {name} is {(enabled ? "enabled" : "disabled")}");
+}
+Console.WriteLine($"Feature Chatbot2 is {(await manager.IsEnabledAsync("Chatbot2") ? "enabled" : "disabled")}");
 
 app.MapDefaultEndpoints();
 

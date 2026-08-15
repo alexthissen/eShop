@@ -1,4 +1,5 @@
 {
 	"containers.containerCommand": "docker",
 	"dotnet.preferVisualStudioCodeFileSystemWatcher": true,
+	"dotnet.defaultSolution": "eShop.Web.slnf",
 }

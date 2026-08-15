@@ -1,0 +1,8 @@
+{
+    "Feature:MyFeature:Test": "1234",
+    "Feature:MyFeature:Message": "Welcome",
+    ".appconfig.featureflag/Chatbot2": {
+        "id": "Chatbot2",
+        "enabled": false
+    }
+}

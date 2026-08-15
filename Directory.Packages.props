@@ -8,7 +8,7 @@
     <AspireVersion>13.4.6</AspireVersion>
     <AspireUnstablePackagesVersion>13.4.6-preview.1.26319.6</AspireUnstablePackagesVersion>
     <GrpcVersion>2.83.0</GrpcVersion>
-    <DuendeVersion>8.0.4</DuendeVersion>
+    <DuendeVersion>7.4.7</DuendeVersion>
     <ApiVersioningVersion>10.2.0</ApiVersioningVersion>
   </PropertyGroup>
   <ItemGroup>

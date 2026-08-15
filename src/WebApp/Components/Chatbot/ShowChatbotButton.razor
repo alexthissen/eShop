@@ -1,6 +1,10 @@
 ﻿@inject NavigationManager Nav
+@inject Microsoft.FeatureManagement.IFeatureManager FeatureManager
 
-<a class="show-chatbot" href="@Nav.GetUriWithQueryParameter("chat", true)" title="Show chatbot"></a>
+@if (chatbotEnabled)
+{
+    <a class="show-chatbot" href="@Nav.GetUriWithQueryParameter("chat", true)" title="Show chatbot"></a>
+}
 
 @if (ShowChat)
 {
@@ -10,4 +14,11 @@
 @code {
     [SupplyParameterFromQuery(Name = "chat")]
     public bool ShowChat { get; set; }
+
+    private bool chatbotEnabled;
+
+    protected override async Task OnInitializedAsync()
+    {
+        chatbotEnabled = await FeatureManager.IsEnabledAsync("Chatbot");
+    }
 }

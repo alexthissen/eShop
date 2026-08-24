@@ -23,6 +23,8 @@ await foreach (var name in manager.GetFeatureNamesAsync())
     Console.WriteLine($"Feature {name} is {(enabled ? "enabled" : "disabled")}");
 }
 
+Console.WriteLine(((IConfigurationRoot)builder.Configuration).GetDebugView());
+
 app.MapDefaultEndpoints();
 app.UseStatusCodePages();
 app.MapCatalogApi();

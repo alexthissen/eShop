@@ -93,19 +93,19 @@ var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithReference(appConfig);
 
 // DevProxy is a local-only development tool; skip it when publishing to Azure
-if (builder.ExecutionContext.IsRunMode)
-{
-    var devProxy = builder.AddDevProxyExecutable("devproxy")
-        .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
-        .WithUrlsToWatch(() => [
-            $"{catalogApi.GetEndpoint("http").Url}/*",
-            $"{catalogApi.GetEndpoint("https").Url}/*"
-        ]);
-    webApp
-        .WaitFor(devProxy)
-        .WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
-        .WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName));
-}
+// if (builder.ExecutionContext.IsRunMode)
+// {
+//     var devProxy = builder.AddDevProxyExecutable("devproxy")
+//         .WithConfigFile("../../.devproxy/devproxyrc-aspire.json")
+//         .WithUrlsToWatch(() => [
+//             $"{catalogApi.GetEndpoint("http").Url}/*",
+//             $"{catalogApi.GetEndpoint("https").Url}/*"
+//         ]);
+//     webApp
+//         .WaitFor(devProxy)
+//         .WithEnvironment("HTTP_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName))
+//         .WithEnvironment("HTTPS_PROXY", devProxy.GetEndpoint(DevProxyResource.ProxyEndpointName));
+// }
 
 var scalar = builder.AddScalarApiReference(options => options.WithTheme(ScalarTheme.DeepSpace))
     .WithApiReference(catalogApi)
@@ -116,13 +116,13 @@ var scalar = builder.AddScalarApiReference(options => options.WithTheme(ScalarTh
     .WithApiReference(webHooksApi);
 
 // set to true if you want to use OpenAI
-bool useOpenAI = true;
+bool useOpenAI = false;
 if (useOpenAI)
 {
     builder.AddOpenAI(catalogApi, webApp, OpenAITarget.OpenAI); // set to AzureOpenAI if you want to use Azure OpenAI
 }
 
-bool useOllama = true;
+bool useOllama = false;
 if (useOllama)
 {
     builder.AddOllama(catalogApi, webApp);

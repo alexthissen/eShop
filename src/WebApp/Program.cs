@@ -24,7 +24,9 @@ builder.AddAzureAppConfiguration(
         });
     });
 
-builder.Services.AddFeatureManagement();
+builder.Services.AddFeatureManagement()
+    .AddFeatureFilter<RingDeploymentFeatureFilter>();
+
 builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
 {
     o.CustomConfigurationMergingEnabled = true;

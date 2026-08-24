@@ -12,6 +12,10 @@ public static class Extensions
         {
             builder.Services.AddDbContext<CatalogContext>();
             builder.Services.AddFeatureManagement();
+            builder.Services.Configure<FeatureManagementOptions>(options =>
+            {
+                options.IgnoreMissingFeatureFilters = true;
+            });
             return;
         }
 
@@ -38,14 +42,28 @@ public static class Extensions
         builder.Services.AddOptions<CatalogOptions>()
             .BindConfiguration(nameof(CatalogOptions));
 
-        builder.Configuration["ConnectionStrings:appconfig"] = "<your-connection-string-here>";
+//        builder.Configuration["ConnectionStrings:appconfig"] = "<your-connection-string-here>";
+
+        // builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
+        // {
+        //     o.CustomConfigurationMergingEnabled = true;
+        // });
+
+        // Configure feature management FIRST to ensure IgnoreMissingFeatureFilters is set
+        // before any feature flags are evaluated during configuration loading
+        builder.Services.AddFeatureManagement();
+        builder.Services.Configure<FeatureManagementOptions>(options =>
+        {
+            options.IgnoreMissingFeatureFilters = true;
+        });
 
         builder.AddAzureAppConfiguration(
             "appconfig",
             configureOptions: options =>
             {
-                options.UseFeatureFlags();
-                // options.UseFeatureFlags(config => config.Select("*", builder.Environment.EnvironmentName));
+                // Only load feature flags with keys matching "CatalogAPI:*" from App Config
+                // This prevents loading WebApp's feature flags that use RingDeploymentFeatureFilter
+                options.UseFeatureFlags(config => config.Select("CatalogAPI:*"));
 
                 // Configure refresh
                 options.ConfigureRefresh(refresh =>
@@ -54,12 +72,6 @@ public static class Extensions
                         .SetRefreshInterval(TimeSpan.FromSeconds(30));
                 });
             });
-
-        builder.Services.AddFeatureManagement();
-        builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
-        {
-            o.CustomConfigurationMergingEnabled = true;
-        });
 
         builder.Services.ConfigureOpenTelemetryTracerProvider(tracing =>
             tracing.AddSource("Microsoft.FeatureManagement"));

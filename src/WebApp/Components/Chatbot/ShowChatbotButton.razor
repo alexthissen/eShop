@@ -1,5 +1,6 @@
 ﻿@inject NavigationManager Nav
 @inject Microsoft.FeatureManagement.IFeatureManagerSnapshot FeatureManager
+@inject Microsoft.Extensions.Logging.ILogger<ShowChatbotButton> Logger;
 
 @if (chatbotEnabled)
 {
@@ -19,6 +20,12 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        chatbotEnabled = await FeatureManager.IsEnabledAsync("Chatbot");
+        ReleaseContext releaseContext = new ReleaseContext
+        {
+            Ring = DeploymentRing.EarlyAdopters,
+            Region = "WestEurope"
+        };
+        Logger.LogError($"Razor: Evaluating feature 'Chatbot' for ring '{releaseContext.Ring}' in region '{releaseContext.Region}'");
+        chatbotEnabled = await FeatureManager.IsEnabledAsync("Chatbot", releaseContext);
     }
 }

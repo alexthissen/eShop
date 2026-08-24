@@ -1,4 +1,6 @@
 ﻿using eShop.Catalog.API.Services;
+using Microsoft.FeatureManagement;
+using OpenTelemetry.Trace;
 
 public static class Extensions
 {
@@ -9,6 +11,7 @@ public static class Extensions
         if (builder.Environment.IsBuild())
         {
             builder.Services.AddDbContext<CatalogContext>();
+            builder.Services.AddFeatureManagement();
             return;
         }
 
@@ -34,6 +37,32 @@ public static class Extensions
 
         builder.Services.AddOptions<CatalogOptions>()
             .BindConfiguration(nameof(CatalogOptions));
+
+        builder.Configuration["ConnectionStrings:appconfig"] = "<your-connection-string-here>";
+
+        builder.AddAzureAppConfiguration(
+            "appconfig",
+            configureOptions: options =>
+            {
+                options.UseFeatureFlags();
+                // options.UseFeatureFlags(config => config.Select("*", builder.Environment.EnvironmentName));
+
+                // Configure refresh
+                options.ConfigureRefresh(refresh =>
+                {
+                    refresh.Register("eShop:Sentinel", refreshAll: true)
+                        .SetRefreshInterval(TimeSpan.FromSeconds(30));
+                });
+            });
+
+        builder.Services.AddFeatureManagement();
+        builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
+        {
+            o.CustomConfigurationMergingEnabled = true;
+        });
+
+        builder.Services.ConfigureOpenTelemetryTracerProvider(tracing =>
+            tracing.AddSource("Microsoft.FeatureManagement"));
 
         if (builder.Configuration["OllamaEnabled"] is string ollamaEnabled && bool.Parse(ollamaEnabled))
         {

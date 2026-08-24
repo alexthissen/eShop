@@ -27,6 +27,14 @@ var identityApi = builder.AddProject<Projects.Identity_API>("identity-api", laun
     .WithReference(identityDb)
     .WithHttpHealthCheck("/health");
 
+var appConfig = builder.AddAzureAppConfiguration("appconfig")
+    .RunAsEmulator(emulator =>
+    {
+        emulator.WithHostPort(28000);
+        emulator.WithDataVolume();
+        emulator.WithLifetime(ContainerLifetime.Persistent);
+    });
+
 var identityEndpoint = identityApi.GetEndpoint(launchProfileName);
 
 var basketApi = builder.AddProject<Projects.Basket_API>("basket-api")
@@ -37,6 +45,7 @@ redis.WithParentRelationship(basketApi);
 
 var catalogApi = builder.AddProject<Projects.Catalog_API>("catalog-api")
     .WithReference(rabbitMq).WaitFor(rabbitMq)
+    .WithReference(appConfig)
     .WithReference(catalogDb);
 
 var orderingApi = builder.AddProject<Projects.Ordering_API>("ordering-api")
@@ -71,14 +80,6 @@ builder.AddYarp("mobile-bff")
 var webhooksClient = builder.AddProject<Projects.WebhookClient>("webhooksclient", launchProfileName)
     .WithReference(webHooksApi)
     .WithEnvironment("IdentityUrl", identityEndpoint);
-
-var appConfig = builder.AddAzureAppConfiguration("appconfig")
-    .RunAsEmulator(emulator =>
-    {
-        emulator.WithHostPort(28000);
-        emulator.WithDataVolume();
-        emulator.WithLifetime(ContainerLifetime.Persistent);
-    });
 
 var webApp = builder.AddProject<Projects.WebApp>("webapp", launchProfileName)
     .WithExternalHttpEndpoints()
@@ -115,13 +116,13 @@ var scalar = builder.AddScalarApiReference(options => options.WithTheme(ScalarTh
     .WithApiReference(webHooksApi);
 
 // set to true if you want to use OpenAI
-bool useOpenAI = false;
+bool useOpenAI = true;
 if (useOpenAI)
 {
     builder.AddOpenAI(catalogApi, webApp, OpenAITarget.OpenAI); // set to AzureOpenAI if you want to use Azure OpenAI
 }
 
-bool useOllama = false;
+bool useOllama = true;
 if (useOllama)
 {
     builder.AddOllama(catalogApi, webApp);

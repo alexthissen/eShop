@@ -1,6 +1,7 @@
 ﻿using eShop.WebApp.Components;
 using eShop.ServiceDefaults;
 using Microsoft.FeatureManagement;
+using OpenTelemetry.Trace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,11 +13,8 @@ builder.AddAzureAppConfiguration(
     "appconfig",
     configureOptions: options =>
     {
-        // // Select specific keys or labels
-        // options.Select("MyApp:*");
-        // options.Select("MyApp:*", "Production");
-
         options.UseFeatureFlags();
+        // options.UseFeatureFlags(config => config.Select("*", builder.Environment.EnvironmentName));
 
         // Configure refresh
         options.ConfigureRefresh(refresh =>
@@ -32,6 +30,9 @@ builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
     o.CustomConfigurationMergingEnabled = true;
 });
 
+builder.Services.ConfigureOpenTelemetryTracerProvider(tracing =>
+    tracing.AddSource("Microsoft.FeatureManagement"));
+
 Console.WriteLine(((IConfigurationRoot)builder.Configuration).GetDebugView());
 
 var app = builder.Build();
@@ -44,7 +45,6 @@ await foreach (var name in manager.GetFeatureNamesAsync())
     var enabled = await manager.IsEnabledAsync(name);
     Console.WriteLine($"Feature {name} is {(enabled ? "enabled" : "disabled")}");
 }
-Console.WriteLine($"Feature Chatbot2 is {(await manager.IsEnabledAsync("Chatbot2") ? "enabled" : "disabled")}");
 
 app.MapDefaultEndpoints();
 

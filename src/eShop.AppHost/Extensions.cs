@@ -166,11 +166,11 @@ internal static class Extensions
         IResourceBuilder<ProjectResource> webApp)
     {
         var ollama = builder.AddOllama("ollama")
-            .WithDataVolume()
-            .WithGPUSupport()
-            .WithOpenWebUI();
+            .WithDataVolume();
+            //.WithGPUSupport()
+            //.WithOpenWebUI();
         var embeddings = ollama.AddModel("embedding", "all-minilm");
-        var chat = ollama.AddModel("chat", "llama3.1");
+        var chat = ollama.AddModel("chat", "llama3.2");
 
         catalogApi.WithReference(embeddings)
             .WithEnvironment("OllamaEnabled", "true")

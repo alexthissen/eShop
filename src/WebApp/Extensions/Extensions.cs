@@ -42,7 +42,7 @@ public static class Extensions
                 EnableMultipleHttp2Connections = true,
                 PooledConnectionIdleTimeout = Timeout.InfiniteTimeSpan,
                 KeepAlivePingDelay = TimeSpan.FromSeconds(60),
-                KeepAlivePingTimeout = TimeSpan.FromSeconds(30)
+                KeepAlivePingTimeout = TimeSpan.FromSeconds(60)
             })
             .AddAuthToken();
 

@@ -1,4 +1,6 @@
-﻿var builder = WebApplication.CreateBuilder(args);
+﻿using Microsoft.FeatureManagement;
+
+var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();
 builder.AddApplicationServices();
@@ -14,11 +16,16 @@ builder.AddDefaultOpenApi(withApiVersioning);
 
 var app = builder.Build();
 
+var manager = app.Services.GetRequiredService<IFeatureManager>();
+await foreach (var name in manager.GetFeatureNamesAsync())
+{
+    var enabled = await manager.IsEnabledAsync(name);
+    Console.WriteLine($"Feature {name} is {(enabled ? "enabled" : "disabled")}");
+}
+
 app.MapDefaultEndpoints();
-
 app.UseStatusCodePages();
-
 app.MapCatalogApi();
-
 app.UseDefaultOpenApi();
+
 app.Run();

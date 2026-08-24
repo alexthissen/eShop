@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Microsoft.Extensions.AI;
 using Pgvector;
+using Microsoft.FeatureManagement;
 
 namespace eShop.Catalog.API.Services;
 
@@ -12,17 +13,26 @@ public sealed class CatalogAI : ICatalogAI
     /// <summary>The web host environment.</summary>
     private readonly IWebHostEnvironment _environment;
     /// <summary>Logger for use in AI operations.</summary>
-    private readonly ILogger _logger;
+    private readonly ILogger<CatalogAI> _logger;
+    private readonly IFeatureManager _featureManager;
 
-    public CatalogAI(IWebHostEnvironment environment, ILogger<CatalogAI> logger, IEmbeddingGenerator<string, Embedding<float>>? embeddingGenerator = null)
+    public CatalogAI(IWebHostEnvironment environment, 
+        ILogger<CatalogAI> logger, 
+        IFeatureManager featureManager,
+        IEmbeddingGenerator<string, Embedding<float>>? embeddingGenerator = null)
     {
+        _featureManager = featureManager;
         _embeddingGenerator = embeddingGenerator;
         _environment = environment;
         _logger = logger;
+
+        IsEnabled = 
+            _featureManager.IsEnabledAsync("CatalogAI").GetAwaiter().GetResult()
+            && _embeddingGenerator is not null;
     }
 
     /// <inheritdoc/>
-    public bool IsEnabled => _embeddingGenerator is not null;
+    public bool IsEnabled { get; }
 
     /// <inheritdoc/>
     public ValueTask<Vector?> GetEmbeddingAsync(CatalogItem item) =>

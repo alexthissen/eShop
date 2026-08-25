@@ -9,6 +9,8 @@ builder.AddServiceDefaults();
 builder.Services.AddRazorComponents().AddInteractiveServerComponents();
 builder.AddApplicationServices();
 
+builder.Configuration["ConnectionStrings:appconfig"] = "<your-connection-string-here>";
+
 builder.AddAzureAppConfiguration(
     "appconfig",
     configureOptions: options =>

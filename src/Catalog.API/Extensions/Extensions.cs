@@ -51,7 +51,6 @@ public static class Extensions
 
         // Configure feature management FIRST to ensure IgnoreMissingFeatureFilters is set
         // before any feature flags are evaluated during configuration loading
-        builder.Services.AddFeatureManagement();
         builder.Services.Configure<FeatureManagementOptions>(options =>
         {
             options.IgnoreMissingFeatureFilters = true;
@@ -61,8 +60,9 @@ public static class Extensions
             "appconfig",
             configureOptions: options =>
             {
-                // Only load feature flags with keys matching "CatalogAPI:*" from App Config
-                // This prevents loading WebApp's feature flags that use RingDeploymentFeatureFilter
+                // Select only keys that start with "CatalogAPI:" for regular configuration
+                // This removes the default "*" query that would load all keys including all feature flags
+                options.Select("CatalogAPI:*");
                 options.UseFeatureFlags(config => config.Select("CatalogAPI:*"));
 
                 // Configure refresh
@@ -72,6 +72,8 @@ public static class Extensions
                         .SetRefreshInterval(TimeSpan.FromSeconds(30));
                 });
             });
+
+        builder.Services.AddFeatureManagement();
 
         builder.Services.ConfigureOpenTelemetryTracerProvider(tracing =>
             tracing.AddSource("Microsoft.FeatureManagement"));

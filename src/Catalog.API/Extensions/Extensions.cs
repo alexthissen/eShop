@@ -44,11 +44,6 @@ public static class Extensions
 
 //        builder.Configuration["ConnectionStrings:appconfig"] = "<your-connection-string-here>";
 
-        // builder.Services.Configure<ConfigurationFeatureDefinitionProviderOptions>(o =>
-        // {
-        //     o.CustomConfigurationMergingEnabled = true;
-        // });
-
         // Configure feature management FIRST to ensure IgnoreMissingFeatureFilters is set
         // before any feature flags are evaluated during configuration loading
         builder.Services.Configure<FeatureManagementOptions>(options =>

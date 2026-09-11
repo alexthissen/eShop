@@ -1,0 +1,55 @@
+{
+  "applicationName": "application",
+  "apiDependencies": {
+    "CatalogClient": {
+      "apiDescriptionUrl": "./src/Catalog.API/Catalog.API_v2.json",
+      "apiDeploymentBaseUrl": "/",
+      "requests": [
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/items/by"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/items/{id}/pic"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/items/{id}"
+        },
+        {
+          "method": "DELETE",
+          "uriTemplate": "api/catalog/items/{id}"
+        },
+        {
+          "method": "PUT",
+          "uriTemplate": "api/catalog/items/{id}"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/items/withsemanticrelevance"
+        },
+        {
+          "method": "POST",
+          "uriTemplate": "api/catalog/items"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/items"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/catalogtypes"
+        },
+        {
+          "method": "GET",
+          "uriTemplate": "api/catalog/catalogbrands"
+        }
+      ],
+      "extensions": {
+        "x-ms-kiota-hash": "2AAC3B4E5272FD2185E6EFDDAAAE31021BB2798664FADB2F536BB6E10B1AD282",
+        "x-ms-kiota-version": "1.35.0"
+      }
+    }
+  }
+}

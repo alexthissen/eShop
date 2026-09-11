@@ -5,6 +5,7 @@
       "src\\Assistant.MCP\\Assistant.MCP.csproj",
       "src\\Basket.API\\Basket.API.csproj",
       "src\\Catalog.API\\Catalog.API.csproj",
+      "src\\Catalog.SDK\\Catalog.SDK.csproj",
       "src\\EventBusRabbitMQ\\EventBusRabbitMQ.csproj",
       "src\\EventBus\\EventBus.csproj",
       "src\\Identity.API\\Identity.API.csproj",

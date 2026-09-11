@@ -1,4 +1,5 @@
-﻿using Microsoft.FeatureManagement;
+﻿using System.Text.Json.Serialization;
+using Microsoft.FeatureManagement;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,11 @@ var withApiVersioning = builder.Services.AddApiVersioning(options =>
 {
     // Include "api-supported-versions" and "api-deprecated-versions" headers in all responses
     options.ReportApiVersions = true;
+});
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.NumberHandling = JsonNumberHandling.Strict;
 });
 
 builder.AddDefaultOpenApi(withApiVersioning);

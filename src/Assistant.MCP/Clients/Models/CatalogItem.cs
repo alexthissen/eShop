@@ -210,10 +210,6 @@ namespace ApiSdk.Models
                 {
                     result.CatalogBrand = new global::ApiSdk.Models.CatalogBrand();
                 }
-                else if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.CatalogItemCatalogBrandMember1 = new global::ApiSdk.Models.CatalogItem_catalogBrandMember1();
-                }
                 return result;
             }
             /// <summary>
@@ -281,11 +277,7 @@ namespace ApiSdk.Models
                 if(ReferenceEquals(parseNode, null)) throw new ArgumentNullException(nameof(parseNode));
                 var mappingValue = parseNode.GetChildNode("")?.GetStringValue();
                 var result = new global::ApiSdk.Models.CatalogItem.CatalogItem_catalogType();
-                if("".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
-                {
-                    result.CatalogItemCatalogTypeMember1 = new global::ApiSdk.Models.CatalogItem_catalogTypeMember1();
-                }
-                else if("CatalogType".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
+                if("CatalogType".Equals(mappingValue, StringComparison.OrdinalIgnoreCase))
                 {
                     result.CatalogType = new global::ApiSdk.Models.CatalogType();
                 }

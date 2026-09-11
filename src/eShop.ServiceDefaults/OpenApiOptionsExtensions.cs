@@ -13,15 +13,17 @@ internal static class OpenApiOptionsExtensions
     {
         options.AddDocumentTransformer((document, context, cancellationToken) =>
         {
-            // Parse API version from document name (e.g., "v1", "v1.0")
-            if (!ApiVersionParser.Default.TryParse(context.DocumentName, out var apiVersion))
-            {
-                return Task.CompletedTask;
-            }
-            
-            document.Info.Version = apiVersion.ToString();
             document.Info.Title = title;
             document.Info.Description = description;
+
+            // Document names are formatted as "v1", "v2", etc. (see GroupNameFormat), but
+            // ApiVersionParser doesn't accept the leading 'v', so strip it before parsing.
+            var versionText = context.DocumentName.TrimStart('v', 'V');
+            if (ApiVersionParser.Default.TryParse(versionText, out var apiVersion))
+            {
+                document.Info.Version = apiVersion.ToString();
+            }
+
             return Task.CompletedTask;
         });
         return options;

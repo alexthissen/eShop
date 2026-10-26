@@ -1,0 +1,16 @@
+name: eShop Aspire preview
+
+on:
+  workflow_dispatch:
+    inputs:
+      devtunnel_account:
+        description: Account type used to sign in to Dev Tunnels (device code is shown in the job log)
+        type: choice
+        options:
+          - github
+          - microsoft
+        default: github
+      max_preview_minutes:
+        description: Maximum minutes to keep the app running while waiting for approval
+        type: number
+        default: 120

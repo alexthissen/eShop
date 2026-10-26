@@ -64,30 +64,6 @@ jobs:
         with:
           auto-start: false # the AppHost starts Dev Proxy itself
 
-      - name: Trust development certificates
-        run: |
-          # ASP.NET Core HTTPS development certificate (service-to-service HTTPS calls)
-          dotnet dev-certs https --clean
-          dotnet dev-certs https --trust
-          echo "SSL_CERT_DIR=$HOME/.aspnet/dev-certs/trust:/usr/lib/ssl/certs" >> "$GITHUB_ENV"
-
-          # Dev Proxy root certificate: start Dev Proxy once to generate it, then trust it
-          echo "$GITHUB_WORKSPACE/devproxy" >> "$GITHUB_PATH"
-          export DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
-          cert="$HOME/.config/dev-proxy/rootCert.pfx"
-          ./devproxy/devproxy > devproxy-init.log 2>&1 &
-          pid=$!
-          for _ in $(seq 1 60); do [ -f "$cert" ] && break; sleep 1; done
-          kill "$pid" || true
-          if [ ! -f "$cert" ]; then
-            cat devproxy-init.log
-            echo "::error::Dev Proxy root certificate was not generated"
-            exit 1
-          fi
-          openssl pkcs12 -in "$cert" -clcerts -nokeys -out dev-proxy-ca.crt -passin pass:""
-          sudo cp dev-proxy-ca.crt /usr/local/share/ca-certificates/
-          sudo update-ca-certificates
-
       - name: Sign in to Dev Tunnels (device code)
         timeout-minutes: 16
         run: |
